@@ -47,7 +47,7 @@ reseteth() {
 killall nginx
 killall php-fpm
 killall pppoe-server
-> $LOG_FILE
+>$LOG_FILE
 sleep 1
 reseteth
 $CMD

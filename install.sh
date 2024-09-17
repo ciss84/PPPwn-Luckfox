@@ -205,7 +205,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
 	"HALT_CHOICE": $HALT_CHOICE,
 	"PPPWN_EXEC": "$PPPWN_EXEC",
     "install_dir": "$CURRENT_DIR",
-    "log_file": "$LOG_DIR",    
+    "log_file": "$LOG_DIR",
     "shutdown_flag": false,
     "execute_flag": false,
     "eth0_flag": false

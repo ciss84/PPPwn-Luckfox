@@ -47,7 +47,7 @@ reseteth() {
 if [ "$AUTO_START" = "true" ]; then
   /etc/init.d/S50nginx stop
   /etc/init.d/S49php-fpm stop
-  > $LOG_FILE
+  >$LOG_FILE
   sleep 1
   reseteth
   $CMD
