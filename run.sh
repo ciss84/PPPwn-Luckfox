@@ -50,9 +50,7 @@ if [ "$AUTO_START" = "true" ]; then
   >$LOG_FILE
   sleep 1
   reseteth
-  $CMD
-  >$LOG_FILE
-  2>&1
+  $CMD >$LOG_FILE 2>&1
   if grep -q "\[+\] Done!" $LOG_FILE; then
   echo "PPPwned"
     if [ "$HALT_CHOICE" = "true" ]; then

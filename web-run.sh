@@ -50,9 +50,7 @@ killall pppoe-server
 >$LOG_FILE
 sleep 1
 reseteth
-$CMD
->$LOG_FILE
-2>&1
+$CMD >$LOG_FILE 2>&1
 if grep -q "\[+\] Done!" $LOG_FILE; then
 sleep 5
 reseteth
