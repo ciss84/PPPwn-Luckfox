@@ -53,7 +53,7 @@ if [ "$AUTO_START" = "true" ]; then
   $CMD
   echo "PPPwned"
     if [ "$HALT_CHOICE" = "true" ]; then
-      sleep 1
+      sleep 5
       halt
     else
       reseteth
