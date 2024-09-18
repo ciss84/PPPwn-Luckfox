@@ -38,7 +38,6 @@ WEB_DIR="/var/www/data"
 WEB_CONF="/etc/nginx"
 CONFIG_DIR="/etc/pppwn"
 CONFIG_FILE="$CONFIG_DIR/config.json"
-LOG_DIR="/var/log/pppwn.log"
 
 # Display the list of firmware versions
 echo "Please select your PS4 firmware version:"
@@ -56,44 +55,17 @@ echo "i) 11.00"
 while true; do
     # Firmware selection
     echo ""
-    read -p "Enter your choice (a/b/c/d/e): " FW_CHOICE
+    read -p "Enter your choice (a/b/c/d/e/f/g/h/i): " FW_CHOICE
     case $FW_CHOICE in
-    a)
-        FW_VERSION="900"
-        READABLE_FW_VERSION="9.00"
-        ;;
-    b)
-        FW_VERSION="903"
-        READABLE_FW_VERSION="9.03"
-        ;;        
-    c)
-        FW_VERSION="960"
-        READABLE_FW_VERSION="9.60"
-        ;;
-    d)
-        FW_VERSION="1000"
-        READABLE_FW_VERSION="10.00"
-        ;;
-    e)
-        FW_VERSION="1001"
-        READABLE_FW_VERSION="10.01"
-        ;;
-    f)
-        FW_VERSION="1050"
-        READABLE_FW_VERSION="10.50"
-        ;;
-    g)
-        FW_VERSION="1051"
-        READABLE_FW_VERSION="10.70"
-        ;;
-    h)
-        FW_VERSION="1070"
-        READABLE_FW_VERSION="10.71"
-        ;;                    
-    i)
-        FW_VERSION="1100"
-        READABLE_FW_VERSION="11.00"
-        ;;
+    a) FW_VERSION="900"; READABLE_FW_VERSION="9.00" ;;
+    b) FW_VERSION="903"; READABLE_FW_VERSION="9.03" ;;
+    c) FW_VERSION="960"; READABLE_FW_VERSION="9.60" ;;
+    d) FW_VERSION="1000"; READABLE_FW_VERSION="10.00" ;;
+    e) FW_VERSION="1001"; READABLE_FW_VERSION="10.01" ;;
+    f) FW_VERSION="1050"; READABLE_FW_VERSION="10.50" ;;
+    g) FW_VERSION="1051"; READABLE_FW_VERSION="10.70" ;;
+    h) FW_VERSION="1070"; READABLE_FW_VERSION="10.71" ;;         
+    i) FW_VERSION="1100"; READABLE_FW_VERSION="11.00" ;;
     *) echo "Invalid choice. Please select a valid option." ;;
     esac
 
@@ -153,16 +125,8 @@ echo -e "${BYellow}Note:${NC} if your PS4 doesn't work with \"pppwn\", try \"ppp
 while true; do
     read -p "Enter your choice (a/b): " PPPWN_CHOICE
     case $PPPWN_CHOICE in
-    a)
-        PPPWN_EXEC="pppwn"
-        READABLE_PPPWN_EXEC="PPPwn"
-        break
-        ;;
-    b)
-        PPPWN_EXEC="pppwn_ipv6"
-        READABLE_PPPWN_EXEC="PPPwn IPV6"
-        break
-        ;;
+    a) PPPWN_EXEC="pppwn"; READABLE_PPPWN_EXEC="PPPwn"; break;;
+    b) PPPWN_EXEC="pppwn_ipv6"; READABLE_PPPWN_EXEC="PPPwn ipv6"; break;;
     *) echo "Invalid choice. Please select a valid option." ;;
     esac
 done
@@ -202,10 +166,10 @@ if [ ! -f "$CONFIG_FILE" ]; then
     "NO_WAIT_PADI": false,
     "REAL_SLEEP": false,
     "AUTO_START": true,
-	"HALT_CHOICE": $HALT_CHOICE,
-	"PPPWN_EXEC": "$PPPWN_EXEC",
+	  "HALT_CHOICE": $HALT_CHOICE,
+	  "PPPWN_EXEC": "$PPPWN_EXEC",
     "install_dir": "$CURRENT_DIR",
-    "log_file": "$LOG_DIR",
+    "log_file": "$LOG_DIR",    
     "shutdown_flag": false,
     "execute_flag": false,
     "eth0_flag": false
@@ -242,7 +206,7 @@ case \$1 in
     start)
         echo "Starting pppwn"
         # Execution run.sh
-	    \$PPPWNDIR/run.sh
+	      \$PPPWNDIR/run.sh
         \$PPPWNDIR/exec.sh
         ;;
     stop)
