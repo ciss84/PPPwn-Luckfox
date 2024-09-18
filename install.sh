@@ -163,7 +163,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
     "GROOM_DELAY": "4",
     "BUFFER_SIZE": "0",
     "AUTO_RETRY": true,
-    "NO_WAIT_PADI": false,
+    "NO_WAIT_PADI": true,
     "REAL_SLEEP": false,
     "AUTO_START": true,
 	  "HALT_CHOICE": $HALT_CHOICE,
