@@ -1,4 +1,4 @@
- (make sure to enable BinLoader in GoldHEN)# PPPwn-Luckfox
+# PPPwn-Luckfox
 
 An alternative low-cost Linux board for exploits PS4 on V11.00 or below.<br>
 Original work by theflow <a href=https://github.com/TheOfficialFloW/PPPwn>PPPwn</a> 
@@ -19,10 +19,8 @@ You can access it at `192.168.1.1` on your PS4 browser. It allows you to:
 - Change your PPPwn settings
 - Shutdown your Luckfox device
 - Execute PPPwn
-- Inject payloads for `9.00, 9.60, 10.00, 10.01, 10.50, 10.70, 10.71, 11.00` (make sure to enable BinLoader in GoldHEN)
-- Inject payloads for "9.03 (make sure payload.bin in you usb fat32)
-- Set on/off auto-run PPPwn on boot (on by default)
-- Disable Eth0 (to free LAN port)
+- Inject payloads (make sure to enable BinLoader in GoldHEN)
+- Turned on/off auto-run on boot (on by default)
   
 You can manually edit the configuration file located at `/etc/pppwn/config.json`.
 
@@ -41,6 +39,8 @@ You can manually edit the configuration file located at `/etc/pppwn/config.json`
 - Ethernet Cable
 - USB Type-C
 - A USB drive with exFAT32 formatted (only use for the first time to load GoldHEN)
+- for "9.03 (make sure payload.bin in you usb fat32)
+- for "9.00, 9.60, 10.00, 10.01, 10.50, 10.70, 10.71, 11.00"(make sure goldhen.bin in you usb fat32)
 - PC/Laptop for config the Luckfox
 
 
