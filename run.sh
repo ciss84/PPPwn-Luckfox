@@ -50,12 +50,14 @@ start_internet() {
   ifconfig br0 up
   udhcpc -i br0
 }
+
 kill_net() {
   ifconfig eth0 down
   ifconfig wlan0 down
   ifconfig br0 down
   brctl delbr br0
 }
+
 reseteth() {
   ifconfig eth0 down
   sleep 1
@@ -69,11 +71,11 @@ if [ "$AUTO_START" = "true" ]; then
   >$LOG_FILE
   sleep 1
   reseteth
-  $CMD >$LOG_FILE 2>&1
+  $CMD >>$LOG_FILE 2>&1
   if grep -q "\[+\] Done!" $LOG_FILE; then
-  echo "PPPwned"
+    echo "PPPwned"
     if [ "$HALT_CHOICE" = "true" ]; then
-      sleep 5
+      sleep 1
       halt
     else
       reseteth
@@ -83,15 +85,15 @@ if [ "$AUTO_START" = "true" ]; then
         start_internet
       else
         pppoe-server -I eth0 -T 60 -N 1 -C isp -S isp -L 192.168.1.1 -R 192.168.1.2 &
-      fi      
+      fi
       sleep 5
       /etc/init.d/S50nginx start
       /etc/init.d/S49php-fpm start
+    fi
   fi
-fi  
 else
   echo "Auto Start is disabled, skipping PPPwn..."
-    if [ "$EN_NET" == "true" ]; then
+  if [ "$EN_NET" == "true" ]; then
     pppoe-server -I br0 -T 60 -N 10 -C isp -S isp -L 0.0.0.0 -R 0.0.0.0 &
     sleep 5
     start_internet

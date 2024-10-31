@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="POST">
-        <label for="FW_VERSION">PS4 Firmware and Goldhen:</label>
+        <label for="FW_VERSION">PS4 Firmware and GoldHEN:</label>
         <select id="FW_VERSION" name="FW_VERSION" required>
             <option value="900" <?php if ($config['FW_VERSION'] == '900') echo 'selected'; ?>>9.00 - GoldHEN</option>
             <option value="903" <?php if ($config['FW_VERSION'] == '903') echo 'selected'; ?>>9.03 - GoldHEN</option>
