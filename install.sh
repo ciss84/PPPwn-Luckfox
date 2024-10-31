@@ -55,22 +55,20 @@ echo "i) 11.00"
 
 # Prompt the user for the selection
 while true; do
-    # Firmware selection
     echo ""
     read -p "Enter your choice (a/b/c/d/e/f/g/h/i): " FW_CHOICE
     case $FW_CHOICE in
-    a) FW_VERSION="900"; READABLE_FW_VERSION="9.00" ;;
-    b) FW_VERSION="903"; READABLE_FW_VERSION="9.03" ;;
-    c) FW_VERSION="960"; READABLE_FW_VERSION="9.60" ;;
-    d) FW_VERSION="1000"; READABLE_FW_VERSION="10.00" ;;
-    e) FW_VERSION="1001"; READABLE_FW_VERSION="10.01" ;;
-    f) FW_VERSION="1050"; READABLE_FW_VERSION="10.50" ;;
-    g) FW_VERSION="1051"; READABLE_FW_VERSION="10.70" ;;
-    h) FW_VERSION="1070"; READABLE_FW_VERSION="10.71" ;;         
-    i) FW_VERSION="1100"; READABLE_FW_VERSION="11.00" ;;
-    *) echo "Invalid choice. Please select a valid option." ;;
+        a) FW_VERSION="900"; READABLE_FW_VERSION="9.00" ;;
+        b) FW_VERSION="903"; READABLE_FW_VERSION="9.03" ;;
+        c) FW_VERSION="960"; READABLE_FW_VERSION="9.60" ;;
+        d) FW_VERSION="1000"; READABLE_FW_VERSION="10.00" ;;
+        e) FW_VERSION="1001"; READABLE_FW_VERSION="10.01" ;;
+        f) FW_VERSION="1050"; READABLE_FW_VERSION="10.50" ;;
+        g) FW_VERSION="1070"; READABLE_FW_VERSION="10.70" ;;
+        h) FW_VERSION="1071"; READABLE_FW_VERSION="10.71" ;;
+        i) FW_VERSION="1100"; READABLE_FW_VERSION="11.00" ;;
+        *) echo "Invalid choice. Please select a valid option." ;;
     esac
-
     # Confirmation of firmware version
     if [ -n "$READABLE_FW_VERSION" ]; then
         echo -e "You have selected firmware version ${BGreen}$READABLE_FW_VERSION${NC}. Is this correct? (y/n)"
@@ -118,6 +116,7 @@ while true; do
 done
 
 if [ "$LF_MODEL" == "Luckfox Pico Ultra W" ]; then
+
     # Ask if the user wants to use internet
     while true; do
         echo ""
@@ -131,6 +130,7 @@ if [ "$LF_MODEL" == "Luckfox Pico Ultra W" ]; then
                 read -p "Enter Wi-Fi SSID: " WIFI_SSID
                 read -p "Enter Wi-Fi password: " WIFI_PASSWORD
                 echo ""
+
                 cat >/etc/wpa_supplicant.conf <<EOL
 ctrl_interface=/var/run/wpa_supplicant
 ap_scan=1
@@ -151,6 +151,7 @@ EOL
             echo "Invalid choice. Please enter 'y' or 'n'."
         fi
     done
+
 else
     INET_CHOICE="false"
 fi
@@ -163,8 +164,10 @@ echo ""
 while true; do
     read -p "Enter your choice (a/b): " PPPWN_CHOICE
     case $PPPWN_CHOICE in
-    a) PPPWN_EXEC="pppwn"; READABLE_PPPWN_EXEC="PPPwn"; break;;
-    b) PPPWN_EXEC="pppwn_ipv6"; READABLE_PPPWN_EXEC="PPPwn ipv6"; break;;
+    a) PPPWN_EXEC="pppwn"; READABLE_PPPWN_EXEC="PPPwn"
+        break ;;
+    b) PPPWN_EXEC="pppwn_ipv6"; READABLE_PPPWN_EXEC="PPPwn IPV6"
+        break ;;
     *) echo "Invalid choice. Please select a valid option." ;;
     esac
 done
@@ -193,9 +196,10 @@ else
     rm -rf $CONFIG_DIR
     mkdir -p $CONFIG_DIR
 fi
+
 # Remove the web directory if it already exists
 if [ -d "$WEB_DIR" ]; then
-    rm -rf $WEB_DIR    
+    rm -rf $WEB_DIR
 fi
 
 # Create the config.json file with the install directory if it doesn't exist
@@ -212,14 +216,14 @@ if [ ! -f "$CONFIG_FILE" ]; then
     "NO_WAIT_PADI": true,
     "REAL_SLEEP": false,
     "AUTO_START": true,
-	  "HALT_CHOICE": $HALT_CHOICE,
-	  "PPPWN_EXEC": "$PPPWN_EXEC",
+	"HALT_CHOICE": $HALT_CHOICE,
+	"PPPWN_EXEC": "$PPPWN_EXEC",
     "install_dir": "$CURRENT_DIR",
-    "log_file": "$LOG_DIR",    
+    "log_file": "$LOG_DIR",
     "shutdown_flag": false,
     "execute_flag": false,
     "eth0_flag": false,
-    "en_inet": $INET_CHOICE    
+    "en_inet": $INET_CHOICE
 }
 EOL
     chmod 777 $CONFIG_FILE
@@ -248,7 +252,7 @@ case \$1 in
     start)
         echo "Starting pppwn"
         # Execution run.sh
-	      \$PPPWNDIR/run.sh
+	    \$PPPWNDIR/run.sh
         \$PPPWNDIR/exec.sh
         ;;
     stop)
@@ -266,4 +270,5 @@ EOL
 chmod +x pppwn pppwn_ipv6 run.sh exec.sh web-run.sh
 chmod +x /etc/init.d/S99pppwn
 echo -e "${BGreen}install completed!${NC}"
+
 reboot
