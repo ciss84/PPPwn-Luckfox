@@ -22,10 +22,10 @@ HALT_CHOICE=$(read_json 'HALT_CHOICE')
 PPPWN_EXEC=$(read_json 'PPPWN_EXEC')
 DIR=$(read_json 'install_dir')
 LOG_FILE=$(read_json 'log_file')
-EN_NET=$(read_json 'en_inet')
-#append
+
 STAGE1_FILE="$DIR/stage1/${FW_VERSION}/stage1.bin"
 STAGE2_FILE="$DIR/stage2/${FW_VERSION}/stage2.bin"
+
 CMD="$DIR/$PPPWN_EXEC --interface eth0 --fw $FW_VERSION --stage1 $STAGE1_FILE --stage2 $STAGE2_FILE"
 
 # Append optional parameters
@@ -36,38 +36,25 @@ CMD="$DIR/$PPPWN_EXEC --interface eth0 --fw $FW_VERSION --stage1 $STAGE1_FILE --
 [ "$AUTO_RETRY" == "true" ] && CMD="$CMD --auto-retry"
 [ "$NO_WAIT_PADI" == "true" ] && CMD="$CMD --no-wait-padi"
 [ "$REAL_SLEEP" == "true" ] && CMD="$CMD --real-sleep"
-#funct
+
 reseteth() {
   ifconfig eth0 down
   sleep 1
   ifconfig eth0 up
   sleep 3
 }
-#gold
-echo "checking goldhen"
-pppoe-server -I eth0 -T 60 -N 1 -C isp -S isp -L 192.168.1.1 -R 192.168.1.2 &
-sleep 2
-while ! ping -c 1 192.168.1.2 >/dev/null 2>&1; do
-sleep 2
-done
-sleep 5
-if nmap -n -p 3232 192.168.1.2 | grep -q '3232/tcp open'; then
-    echo "Goldhen found aborting pppwn"
-    GOLDHEN_ACTIVE=y
-fi
-#exec
+
 if [ "$AUTO_START" = "true" ]; then
-  if [ "$GOLDHEN_ACTIVE" = "n" ]; then
   /etc/init.d/S50nginx stop
   /etc/init.d/S49php-fpm stop
   >$LOG_FILE
   sleep 1
   reseteth
-  $CMD >>$LOG_FILE 2>&1
+  $CMD >$LOG_FILE 2>&1
   if grep -q "\[+\] Done!" $LOG_FILE; then
-    echo "PPPwned"
+  echo "PPPwned"
     if [ "$HALT_CHOICE" = "true" ]; then
-      sleep 1
+      sleep 5
       halt
     else
       reseteth
@@ -75,9 +62,9 @@ if [ "$AUTO_START" = "true" ]; then
       sleep 5
       /etc/init.d/S50nginx start
       /etc/init.d/S49php-fpm start
-    fi
   fi
 fi  
 else
   echo "Auto Start is disabled, skipping PPPwn..."
+  pppoe-server -I eth0 -T 60 -N 1 -C isp -S isp -L 192.168.1.1 -R 192.168.1.2 &
 fi

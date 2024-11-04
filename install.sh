@@ -15,14 +15,13 @@ ______________________________
 EOF
 
 echo ""
-echo "★ v1.2.5 Unoficial ★"
+echo "★ v1.2.3 ★"
 echo ""
 echo "by: https://github.com/0x1iii1ii/PPPwn-Luckfox"
 echo "credit to:"
 echo "https://github.com/TheOfficialFloW/PPPwn for pppwn"
 echo "https://github.com/xfangfang/PPPwn_cpp for pppwn cpp"
 echo "https://github.com/harsha-0110/PPPwn-Luckfox for webserver"
-echo "https://github.com/GoldHEN/GoldHEN for GoldHEN"
 echo ""
 
 # Constants
@@ -33,7 +32,6 @@ BYellow='\033[1;33m' # Bold Yellow
 BCyan='\033[1;36m'   # Cyan
 NC='\033[0m'         # No Color
 
-LF_MODEL=$(cat /proc/device-tree/model)
 CURRENT_DIR=$(pwd)
 LOG_DIR="/var/log/pppwn.log"
 WEB_DIR="/var/www/data"
@@ -55,20 +53,22 @@ echo "i) 11.00"
 
 # Prompt the user for the selection
 while true; do
+    # Firmware selection
     echo ""
     read -p "Enter your choice (a/b/c/d/e/f/g/h/i): " FW_CHOICE
     case $FW_CHOICE in
-        a) FW_VERSION="900"; READABLE_FW_VERSION="9.00" ;;
-        b) FW_VERSION="903"; READABLE_FW_VERSION="9.03" ;;
-        c) FW_VERSION="960"; READABLE_FW_VERSION="9.60" ;;
-        d) FW_VERSION="1000"; READABLE_FW_VERSION="10.00" ;;
-        e) FW_VERSION="1001"; READABLE_FW_VERSION="10.01" ;;
-        f) FW_VERSION="1050"; READABLE_FW_VERSION="10.50" ;;
-        g) FW_VERSION="1070"; READABLE_FW_VERSION="10.70" ;;
-        h) FW_VERSION="1071"; READABLE_FW_VERSION="10.71" ;;
-        i) FW_VERSION="1100"; READABLE_FW_VERSION="11.00" ;;
-        *) echo "Invalid choice. Please select a valid option." ;;
+    a) FW_VERSION="900"; READABLE_FW_VERSION="9.00" ;;
+    b) FW_VERSION="903"; READABLE_FW_VERSION="9.03" ;;
+    c) FW_VERSION="960"; READABLE_FW_VERSION="9.60" ;;
+    d) FW_VERSION="1000"; READABLE_FW_VERSION="10.00" ;;
+    e) FW_VERSION="1001"; READABLE_FW_VERSION="10.01" ;;
+    f) FW_VERSION="1050"; READABLE_FW_VERSION="10.50" ;;
+    g) FW_VERSION="1051"; READABLE_FW_VERSION="10.70" ;;
+    h) FW_VERSION="1070"; READABLE_FW_VERSION="10.71" ;;         
+    i) FW_VERSION="1100"; READABLE_FW_VERSION="11.00" ;;
+    *) echo "Invalid choice. Please select a valid option." ;;
     esac
+
     # Confirmation of firmware version
     if [ -n "$READABLE_FW_VERSION" ]; then
         echo -e "You have selected firmware version ${BGreen}$READABLE_FW_VERSION${NC}. Is this correct? (y/n)"
@@ -120,13 +120,13 @@ echo "Please select the pppwn executable you want to use:"
 echo -e "a) ${BGreen}pppwn${NC} - a normal stable release for some PS4 models"
 echo -e "b) ${BGreen}pppwn_ipv6${NC} - an update IPV6 which compatible for all PS4 models"
 echo ""
+echo -e "${BYellow}Note:${NC} if your PS4 doesn't work with \"pppwn\", try \"pppwn_ipv6\" by redo installation again or config from webserver"
+
 while true; do
     read -p "Enter your choice (a/b): " PPPWN_CHOICE
     case $PPPWN_CHOICE in
-    a) PPPWN_EXEC="pppwn"; READABLE_PPPWN_EXEC="PPPwn"
-        break ;;
-    b) PPPWN_EXEC="pppwn_ipv6"; READABLE_PPPWN_EXEC="PPPwn IPV6"
-        break ;;
+    a) PPPWN_EXEC="pppwn"; READABLE_PPPWN_EXEC="PPPwn"; break;;
+    b) PPPWN_EXEC="pppwn_ipv6"; READABLE_PPPWN_EXEC="PPPwn ipv6"; break;;
     *) echo "Invalid choice. Please select a valid option." ;;
     esac
 done
@@ -151,21 +151,12 @@ confirm_settings "$READABLE_FW_VERSION" "$READABLE_PPPWN_EXEC" "$READABLE_HALT_C
 # Create configuration directory if it doesn't exist
 if [ ! -d "$CONFIG_DIR" ]; then
     mkdir -p $CONFIG_DIR
-else
-    rm -rf $CONFIG_DIR
-    mkdir -p $CONFIG_DIR
-fi
-
-# Remove the web directory if it already exists
-if [ -d "$WEB_DIR" ]; then
-    rm -rf $WEB_DIR
 fi
 
 # Create the config.json file with the install directory if it doesn't exist
 if [ ! -f "$CONFIG_FILE" ]; then
     cat >$CONFIG_FILE <<EOL
 {
-    "luckfox_model":"$LF_MODEL",
     "FW_VERSION": "$FW_VERSION",
     "TIMEOUT": "5",
     "WAIT_AFTER_PIN": "5",
@@ -174,17 +165,22 @@ if [ ! -f "$CONFIG_FILE" ]; then
     "AUTO_RETRY": true,
     "NO_WAIT_PADI": true,
     "REAL_SLEEP": false,
-    "AUTO_START": false,
-	"HALT_CHOICE": $HALT_CHOICE,
-	"PPPWN_EXEC": "$PPPWN_EXEC",
+    "AUTO_START": true,
+	  "HALT_CHOICE": $HALT_CHOICE,
+	  "PPPWN_EXEC": "$PPPWN_EXEC",
     "install_dir": "$CURRENT_DIR",
-    "log_file": "$LOG_DIR",
+    "log_file": "$LOG_DIR",    
     "shutdown_flag": false,
     "execute_flag": false,
     "eth0_flag": false
 }
 EOL
     chmod 777 $CONFIG_FILE
+fi
+
+# Remove the web directory if it already exists
+if [ -d "$WEB_DIR" ]; then
+    rm -rf $WEB_DIR
 fi
 
 if [ "$HALT_CHOICE" != "true" ]; then
@@ -210,7 +206,7 @@ case \$1 in
     start)
         echo "Starting pppwn"
         # Execution run.sh
-	    \$PPPWNDIR/run.sh
+	      \$PPPWNDIR/run.sh
         \$PPPWNDIR/exec.sh
         ;;
     stop)
@@ -228,5 +224,4 @@ EOL
 chmod +x pppwn pppwn_ipv6 run.sh exec.sh web-run.sh
 chmod +x /etc/init.d/S99pppwn
 echo -e "${BGreen}install completed!${NC}"
-
 reboot
